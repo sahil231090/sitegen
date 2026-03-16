@@ -35,7 +35,7 @@ class LeafNode(HTMLNode):
     
     def to_html(self):
         if self.value is None:
-            raise ValueError("value of LeafNode is set to None!")
+            raise ValueError(f"value of LeafNode is set to None! tag ={self.tag} ")
         if self.tag is None:
             return self.value
         if self.props is None:
@@ -44,7 +44,7 @@ class LeafNode(HTMLNode):
             return f"<{self.tag} {self.props_to_html()}>{self.value}</{self.tag}>"
     
     def __repr__(self):
-        return f"""HTMLNode(
+        return f"""LeafNode(
     tag={self.tag}, 
     value={self.value}, 
     props={self.props})
@@ -75,6 +75,13 @@ class ParentNode(HTMLNode):
         
         output += f"</{self.tag}>"
         return output
+
+    def __repr__(self):
+        return f"""ParentNode(
+    tag={self.tag}, 
+    children={self.children}, 
+    props={self.props})
+    """
     
 def text_node_to_html_node(text_node):
     if text_node.text_type not in list(TextType):
@@ -91,7 +98,7 @@ def text_node_to_html_node(text_node):
     elif text_node.text_type == TextType.LINK:
         return LeafNode(tag='a', value=text_node.text, props={'href': text_node.url})
     elif text_node.text_type == TextType.IMAGE:
-        return LeafNode(tag='img', value=None, props={'src': text_node.url, 'alt': text_node.text})
+        return LeafNode(tag='img', value='', props={'src': text_node.url, 'alt': text_node.text})
     
 
 def markdown_to_html_node(markdown):
